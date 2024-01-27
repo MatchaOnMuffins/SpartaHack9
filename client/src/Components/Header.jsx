@@ -4,14 +4,13 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAuth0 } from "@auth0/auth0-react";
 import LogoutButton from './Logout';
 import SignIn from './SignIn';
 export default function Header() {
   
-    const { user, isAuthenticated, isLoading } = useAuth0();
-
+    const {isAuthenticated} = useAuth0();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -20,11 +19,11 @@ export default function Header() {
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
+            color="secondary"
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <AccountCircleIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Dashboard
