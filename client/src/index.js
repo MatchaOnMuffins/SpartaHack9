@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { Auth0Provider } from '@auth0/auth0-react';
-import SignIn from './Components/signin';
+import SignIn from './Components/SignIn';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,7 +15,6 @@ root.render(
     }}
   >
     <App />
-  <SignIn />
   </Auth0Provider>
     
 );
