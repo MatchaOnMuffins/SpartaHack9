@@ -8,7 +8,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth0 } from "@auth0/auth0-react";
 import LogoutButton from './Logout';
 import SignIn from './SignIn';
-export default function ButtonAppBar() {
+export default function Header() {
   
     const { user, isAuthenticated, isLoading } = useAuth0();
 
