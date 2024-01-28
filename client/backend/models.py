@@ -31,29 +31,26 @@ class AddCourseResponse(BaseModel):
 
 
 class Message(BaseModel):
-    type: str
+    role: str
     content: str
 
 
 class ChatRequest(BaseModel):
     messages: List[Message]
-    user_id: str
 
 
 class ChatResponse(BaseModel):
-    messages: List[Message]
+    messages: Optional[List[dict]] = None
     error: Optional[str] = None
-    
     
     
 class GetCourseResponse(BaseModel):
     course: Course
     error: Optional[str] = None
-    
-    
-    
+
+
 class GetUserResponse(BaseModel):
-    user: User
+    user: Optional[User] = None
     error: Optional[str] = None
     
     

@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 
 from chat import llm_chat
 
+
+from fastapi.middleware.cors import CORSMiddleware
+
 load_dotenv()
 
 
@@ -19,9 +22,27 @@ db.create_tables()
 
 app = fastapi.FastAPI()
 
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+
 header_dict = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Access-Control-Allow-Origin": "*",  
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 }
 
 
@@ -56,7 +77,14 @@ async def get_user(user_id: str)->GetUserResponse:
     user = db.get_user_by_id(user_id)
     if user:
         return GetUserResponse(user=user)
-    return GetUserResponse(error="User not found")
+    # return 404 and error message
+    return fastapi.responses.JSONResponse(
+        {"error":"User not found"}, status_code=404, headers=header_dict
+    )
+    
+    
+    #return 
+#GetUserResponse(error="User not found")
 
 
 @app.post("/add_user")
@@ -82,17 +110,24 @@ async def add_user(user: User)->AddUserResponse:
 
 
 @app.post("/chat")
-async def chat_endpoint(request: ChatRequest)->ChatResponse:
+async def chat_endpoint(request: ChatRequest):
+    print(request)
 
     history = request.messages
-
-    history = history[:-1]
-    prompt = request.messages[-1]["content"]
+    try:
+        history = history[:-1]
+    except:
+        history = []
+        
+    prompt = request.messages[-1].content
     try:
         response = llm_chat(prompt, history=history)
-        return ChatResponse(responses=response)
+        return response
     except Exception as e:
-        return ChatResponse(error=str(e))
+        print(e)
+        return fastapi.responses.JSONResponse(
+            content={"error": str(e)}, status_code=400, headers=header_dict
+        )
 
 
 @app.get("course/{course_id}/chat")

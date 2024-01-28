@@ -58,12 +58,19 @@ chat = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-1106")
 def llm_chat(
     query, history=None
 ):
-
-    retreival_query = " ".join([message.content for message in history])
+    history_content = [message["content"] for message in history]
+    # try to only get the last 3 messages
+    try:
+        retreival_query = " \n".join(history_content[-3:])
+    except:
+        retreival_query = ' '.join(history_content)
+    
 
     retreival_query = retreival_query + " \n" + query
 
     docs = retriever.invoke(retreival_query)
+    
+    #print(retreival_query)
 
     messages = []
 
@@ -97,7 +104,23 @@ def llm_chat(
     messages.append(
         HumanMessage(
             content=f"""
-            ONLY USE THE FOLLOWING TEXT TO ANSWER THE STUDENT'S QUESTIONS:
+            Generate your response by following the steps below:
+
+1. Recursively break-down the post into smaller questions/directives
+
+2. For each atomic question/directive:
+
+2a. Select the most relevant information from the context in light of the conversation history
+
+3. Generate a draft response using the selected information, whose brevity/detail are tailored to the student's expertise
+
+4. Remove duplicate content from the draft response
+
+5. Generate your final response after adjusting it to increase accuracy and relevance
+
+6. Now only show your final response! Do not provide any explanations or details
+
+CONTEXT:
             {docs[0].page_content
             }
             
@@ -105,11 +128,21 @@ def llm_chat(
             
         However, you should remember that the users can't see the text above, so you should avoid referencing it in your response.
         
+        If the user wants elaboration on a topic, you should explain it in more detail.
+        
         If the student says "Hello", you should introduce yourself and ask them how you can help them.
+        
+        
+        CONVERSATION HISTORY:
+        
+        {history_content}
+        
         User Query:
         {query}"""
         )
     )
+    
+    #print(messages)
 
     # return chat(
     #    messages,
@@ -123,6 +156,11 @@ def llm_chat(
     ))
     
     formatted_messages = []
+    
+    # replace the second to last message with the query only
+    messages[-2] = HumanMessage(
+        content=query
+    )
     
     
     
@@ -163,4 +201,4 @@ if __name__ == "__main__":
 
         # print(history)
 
-        print(history[-1].content)
+        print(history[-1]["content"])
