@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 
 export default function Dashboard(){
     const { user, isAuthenticated, isLoading } = useAuth0();
+    console.log(user)
     const[courseList,setCourseList] = useState([]);
 
     const navigate = useNavigate();
