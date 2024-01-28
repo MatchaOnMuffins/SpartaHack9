@@ -4,10 +4,10 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAuth0 } from "@auth0/auth0-react";
 import LogoutButton from './Logout';
 import SignIn from './SignIn';
+import UserProfile  from './userprofile';
 export default function Header() {
   
     const {isAuthenticated} = useAuth0();
@@ -23,7 +23,8 @@ export default function Header() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <AccountCircleIcon />
+            <UserProfile />
+            
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Dashboard

@@ -1,31 +1,63 @@
-class User:
-    def __init__(self, user_id, username, email):
-        self.user_id = user_id
-        self.username = username
-        self.email = email
+from pydantic import BaseModel
+from typing import Optional, List, Union
+from langchain.schema import HumanMessage, SystemMessage, AIMessage
 
-class Instructor(User):
-    def __init__(self, user_id, username, email):
-        super().__init__(user_id, username, email)
-        self.classes = [Class_Instructor]
 
-class Student(User):
-    def __init__(self, user_id, username, email):
-        super().__init__(user_id, username, email)
-        self.classes = [Class_Student]
+class User(BaseModel):
+    user_id: str
+    email: str
+    name: str
+    courses: list[str]
+    is_instructor: bool
 
-class Class:
-    def __init__(self, class_id, class_name, professor):
-        self.class_id = class_id
-        self.class_name = class_name
-        self.professor = professor
-        self.std = []
 
-class Class_Instructor(Class):
-    def __init__(self, class_id, class_name, professor):
-        super().__init__(class_id, class_name, professor)
+class Course(BaseModel):
+    course_id: str
+    class_name: str
+    professor: str
+    course_description: str
 
-class Class_Student(Class):
-    def __init__(self, class_id, class_name, professor):
-        super().__init__(class_id, class_name, professor)
 
+class AddCourseRequest(BaseModel):
+    course_id: str
+    class_name: str
+    professor: str
+    course_description: str
+    user_id: str
+
+
+class AddCourseResponse(BaseModel):
+    success: str
+
+
+class Message(BaseModel):
+    type: str
+    content: str
+
+
+class ChatRequest(BaseModel):
+    messages: List[Message]
+    user_id: str
+
+
+class ChatResponse(BaseModel):
+    messages: List[Message]
+    error: Optional[str] = None
+    
+    
+    
+class GetCourseResponse(BaseModel):
+    course: Course
+    error: Optional[str] = None
+    
+    
+    
+class GetUserResponse(BaseModel):
+    user: User
+    error: Optional[str] = None
+    
+    
+class AddUserResponse(BaseModel):
+    success: str
+    error: Optional[str] = None
+    
