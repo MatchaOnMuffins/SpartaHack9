@@ -14,7 +14,7 @@ export default function Dashboard(){
         axios
         .get(`http://localhost:4000/user/${hash}`)
         .then((res)=>{
-            setCourseList(res.data);
+            setCourseList(res.data.courses);
         })
         .catch((err)=>{
             console.error(err);

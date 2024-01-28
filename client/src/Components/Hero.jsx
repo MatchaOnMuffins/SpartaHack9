@@ -25,7 +25,7 @@ const HeroPage = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '80vh',
+        height: '90vh',
         padding: '20px',
         borderRadius: '15px',
         backgroundColor:'primary.main'
