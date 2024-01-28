@@ -14,7 +14,13 @@ const Chatbox = (props) => {
 
     try {
       // Mock server interaction (replace with actual server logic) 
-      const response = await axios.post(serverEndpoint, { inputMessage});
+      const response = await axios.post(serverEndpoint, {
+        messages:
+            [{
+                role:"user",
+                content:{inputMessage}
+            }]
+      });
 
       // Update local state with the sent message
       setMessages((prevMessages) => [...prevMessages, { text: inputMessage, type: 'user' }]);

@@ -19,7 +19,7 @@ const UserProfile = () => {
     <Container>
       <Grid container>
         <Grid item xs={12}>
-          <Button onClick={openDrawer} style={{ position: 'fixed', top: 20, left: 20 }} variant="text">
+          <Button color='secondary' onClick={openDrawer} style={{ position: 'fixed', top: 20, left: 20 }} variant="text">
             <AccountCircleIcon />
           </Button>
           <Drawer anchor="left" open={drawerOpened} onClose={closeDrawer}>

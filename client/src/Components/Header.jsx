@@ -19,7 +19,7 @@ export default function Header() {
         <IconButton
             size="large"
             edge="start"
-            color="inherit"
+            color="secondary"
             aria-label="menu"
             sx={{ mr: 2 }}
           >
