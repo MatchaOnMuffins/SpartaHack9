@@ -1,5 +1,5 @@
 import sqlite3
-from models import User, Class
+from models import User, Instructor, Student, Class, Class_Instructor, Class_Student
 
 class Database:
     def __init__(self, db_name='mydatabase.db'):
@@ -14,7 +14,8 @@ class Database:
                 username TEXT NOT NULL,
                 email TEXT NOT NULL
             )
-        ''')
+        '''
+        )
 
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS classes (
@@ -22,17 +23,8 @@ class Database:
                 class_name TEXT NOT NULL,
                 professor TEXT NOT NULL
             )
-        ''')
-
-        self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS deadlines (
-                deadline_id INTEGER PRIMARY KEY,
-                class_id INTEGER NOT NULL,
-                content TEXT NOT NULL,
-                due_date TEXT NOT NULL,
-                FOREIGN KEY (class_id) REFERENCES classes (class_id)
-            )
-        ''')
+            '''
+        )
 
         self.conn.commit()
 

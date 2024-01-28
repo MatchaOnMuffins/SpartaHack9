@@ -28,4 +28,4 @@ class Class_Instructor(Class):
 class Class_Student(Class):
     def __init__(self, class_id, class_name, professor):
         super().__init__(class_id, class_name, professor)
-        
+
