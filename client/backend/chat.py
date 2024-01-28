@@ -57,11 +57,7 @@ chat = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-1106")
 
 def llm_chat(
     query, history=None
-) -> List[Union[HumanMessage, SystemMessage, AIMessage]]:
-
-    # add up everything in history
-    # embed it
-    # search for it
+):
 
     retreival_query = " ".join([message.content for message in history])
 
@@ -82,6 +78,12 @@ def llm_chat(
             if message["role"] == "user":
                 messages.append(
                     HumanMessage(
+                        content=message["content"],
+                    )
+                )
+            elif message["role"] == "system":
+                messages.append(
+                    SystemMessage(
                         content=message["content"],
                     )
                 )
@@ -114,13 +116,41 @@ def llm_chat(
     # ).content
 
     # print(messages)
-    messages.append(
-        chat(
-            messages,
-        )
-    )
-
-    return messages
+    
+    
+    messages.append(chat(
+        messages,
+    ))
+    
+    formatted_messages = []
+    
+    
+    
+    for interaction in messages:
+        
+        
+        if interaction.type == "human":
+            formatted_messages.append(
+                {"role": "user", "content": interaction.content}
+            )
+            
+        elif interaction.type == "system":
+            formatted_messages.append(
+                {"role": "assistant", "content": interaction.content}
+            )
+            
+        elif interaction.type == "ai":
+            formatted_messages.append(
+                {"role": "assistant", "content": interaction.content}
+            )
+            
+        else:
+            raise ValueError("Invalid message type")
+        
+        
+        
+    return formatted_messages
+    #return messages
 
 
 if __name__ == "__main__":

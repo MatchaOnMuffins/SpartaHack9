@@ -3,7 +3,7 @@ import database
 
 # resource
 import openai
-from models import User, Course, AddCourseRequest, ChatRequest, ChatResponse
+from models import *
 from dotenv import load_dotenv
 
 from chat import llm_chat
@@ -26,63 +26,41 @@ header_dict = {
 
 
 @app.get("course/{course_id}")
-async def get_course(course_id: str):
+async def get_course(course_id: str)-> GetCourseResponse:
     course = db.get_class_by_id(course_id)
     if course:
-        return fastapi.responses.JSONResponse(
-            content=course, status_code=200, headers=header_dict
-        )
-    return fastapi.responses.JSONResponse(
-        content={"error": "course not found"}, status_code=404, headers=header_dict
-    )
+        return GetCourseResponse(course=course)
+    return GetCourseResponse(error="Course not found")
 
 
 @app.post("/add_course")
-async def add_course(request: AddCourseRequest):
+async def add_course(request: AddCourseRequest)->AddCourseResponse:
     # check if the user id is valid
 
     user = db.get_user_by_id(request.user_id)
     if not user:
-        return fastapi.responses.JSONResponse(
-            content={"error": "Unauthorized"}, status_code=403, headers=header_dict
-        )
-
+        return AddCourseResponse(error="User ID Not Found")
     if not user.is_instructor:
-        return fastapi.responses.JSONResponse(
-            content={"error": "Unauthorized"}, status_code=403, headers=header_dict
-        )
+        return AddCourseResponse(error="User is not an instructor")
 
     if db.get_class_by_id(request.course_id):
-        return fastapi.responses.JSONResponse(
-            content={"error": "Course ID Not Unique"},
-            status_code=400,
-            headers=header_dict,
-        )
+        return AddCourseResponse(error="Course ID already exists")
 
     if db.add_course(request):
-        return fastapi.responses.JSONResponse(
-            content={"success": "course added"}, status_code=200, headers=header_dict
-        )
+        return AddCourseResponse(success="Course added")
 
-    return fastapi.responses.JSONResponse(
-        content={"error": "course not added"}, status_code=400, headers=header_dict
-    )
-
+    return AddCourseResponse(error="Course not added")
 
 @app.get("/user/{user_id}")
-async def get_user(user_id: str):
+async def get_user(user_id: str)->GetUserResponse:
     user = db.get_user_by_id(user_id)
     if user:
-        return fastapi.responses.JSONResponse(
-            content=user, status_code=200, headers=header_dict
-        )
-    return fastapi.responses.JSONResponse(
-        content={"error": "user not found"}, status_code=404, headers=header_dict
-    )
+        return GetUserResponse(user=user)
+    return GetUserResponse(error="User not found")
 
 
 @app.post("/add_user")
-async def add_user(user: User):
+async def add_user(user: User)->AddUserResponse:
     exists = db.get_user_by_id(user.user_id)
 
     if exists:
@@ -104,7 +82,7 @@ async def add_user(user: User):
 
 
 @app.post("/chat")
-async def chat_endpoint(request: ChatRequest):
+async def chat_endpoint(request: ChatRequest)->ChatResponse:
 
     history = request.messages
 
@@ -114,12 +92,14 @@ async def chat_endpoint(request: ChatRequest):
         response = llm_chat(prompt, history=history)
         return ChatResponse(responses=response)
     except Exception as e:
-        raise fastapi.HTTPException(status_code=500, detail=str(e))
+        return ChatResponse(error=str(e))
 
 
 @app.get("course/{course_id}/chat")
 async def get_chat(course_id: str):
-    pass
+    return fastapi.responses.JSONResponse(
+        content={"error": "not implemented"}, status_code=400, headers=header_dict
+    )
 
 
 if __name__ == "__main__":
