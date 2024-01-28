@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";import HeroPage 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Dashboard from './Components/Dashboard';
 import CoursePage from './Components/CoursePage';
+import CourseAdd from './Components/CourseAdd';
 
 const theme = createTheme({
   palette: {
@@ -23,6 +24,7 @@ function App() {
         <Route path = "/" element={<HeroPage/>}/>
         <Route path = "/dash" element={<Dashboard/>}/>
         <Route path = "/coursepage" element={<CoursePage/>}/>
+        <Route path='/courseadd' element={<CourseAdd/>}/>
     </Routes>
     </BrowserRouter>
     </ThemeProvider>

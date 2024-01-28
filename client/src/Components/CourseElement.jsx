@@ -8,7 +8,9 @@ import Typography from '@mui/material/Typography';
 
 export default function BasicCard(props) {
     const [isHovered, setIsHovered] = useState(false);
+    const handleVTA=()=>{
 
+    }
   return (
     <Card sx={{ minWidth: 275 }}
       onMouseEnter={() => setIsHovered(true)} 
@@ -19,7 +21,7 @@ export default function BasicCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        {isHovered && <Button size="small">VTA</Button>}
+        {isHovered && <Button size="small" onClick={handleVTA}>VTA</Button>}
       </CardActions>
     </Card>
   );
