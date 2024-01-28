@@ -8,10 +8,10 @@ import CourseAdd from './Components/CourseAdd';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#81689D', // Change the primary color to green
+      main: '#647D87', // Change the primary color to green
     },
     secondary: {
-      main: '#E9F6FF', // Change the secondary color to deep orange
+      main: '#FAEF9B', // Change the secondary color to deep orange
     },
   },
 });
@@ -23,7 +23,7 @@ function App() {
     <Routes>
         <Route path = "/" element={<HeroPage/>}/>
         <Route path = "/dash" element={<Dashboard/>}/>
-        <Route path = "/coursepage" element={<CoursePage/>}/>
+        <Route path = "/coursepage/:courseid" element={<CoursePage/>}/>
         <Route path='/courseadd' element={<CourseAdd/>}/>
     </Routes>
     </BrowserRouter>
