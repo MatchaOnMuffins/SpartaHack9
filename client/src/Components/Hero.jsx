@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Container, Typography, Paper } from '@mui/material';
+import {Typography, Paper } from '@mui/material';
 import { useAuth0 } from "@auth0/auth0-react";
 import SignIn from './SignIn';
 import {useNavigate} from 'react-router-dom'
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 
 const HeroPage = () => {
 
@@ -25,7 +25,7 @@ const HeroPage = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '80vh',
+        height: '90vh',
         padding: '20px',
         borderRadius: '15px',
         backgroundColor:'primary.main'
