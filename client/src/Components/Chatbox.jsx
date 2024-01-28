@@ -8,25 +8,29 @@ const Chatbox = (props) => {
 
   // Mock server endpoint (replace with your server endpoint)
   const serverEndpoint = `https://dev.grasstouching.com/chat`;
-
   const sendMessage = async () => {
     if (inputMessage.trim() === '') return;
 
     try {
       // Mock server interaction (replace with actual server logic) 
-      const response = await axios.post(serverEndpoint, {
+        let response = await axios.post(serverEndpoint, {
         messages:
             [{
                 role:"user",
-                content:{inputMessage}
+                content:`${inputMessage}`
             }]
       });
+
+
+      response = response.data;
+      let lastElement = response[response.length - 1];
+
 
       // Update local state with the sent message
       setMessages((prevMessages) => [...prevMessages, { text: inputMessage, type: 'user' }]);
 
       // Receive and display the server's response
-      setMessages((prevMessages) => [...prevMessages, { text: response.data, type: 'server' }]);
+      setMessages((prevMessages) => [...prevMessages, { text: lastElement.content, type: 'server' }]);
 
       // Clear the input field
       setInputMessage('');
